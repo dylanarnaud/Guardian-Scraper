@@ -114,9 +114,9 @@ class GuardianAPI:
             
         return "Unauthorized", 401
 
-    def run(self, debug=True, threaded=False):
+    def run(self, debug=True, threaded=False, host='127.0.0.1'):
         """Run the Flask application."""
-        self.app.run(debug=debug, threaded=threaded)
+        self.app.run(debug=debug, threaded=threaded, host=host)
 
     
     def stop(self):

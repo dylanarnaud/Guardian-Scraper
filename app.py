@@ -1,4 +1,5 @@
 # --- Standard Libraries ---
+import os
 import logging
 import requests
 import schedule
@@ -13,9 +14,10 @@ from guardian_database import GuardianDatabase
 from guardian_api import GuardianAPI
 
 # --- Constants ---
-NUM_SCRAPER_PAGES_INITIAL = 10
-NUM_SCRAPER_PAGES = 1
-MINUTES_BETWEEN_RUNS = 60
+NUM_SCRAPER_PAGES_INITIAL = int(os.environ.get('NUM_SCRAPER_PAGES_INITIAL', 100))
+NUM_SCRAPER_PAGES = int(os.environ.get('NUM_SCRAPER_PAGES', 1))
+MINUTES_BETWEEN_RUNS = int(os.environ.get('MINUTES_BETWEEN_RUNS', 60))
+FLASK_HOST = os.environ.get('FLASK_HOST', '127.0.0.1')
 
 # --- Logging Configuration ---
 logging.basicConfig(
@@ -60,7 +62,7 @@ def scraper_job(pages_to_scrape=NUM_SCRAPER_PAGES):
 
 def api_launch():
     """Launch the GuardianAPI for better concurrency"""
-    api.run(debug=False, threaded=True)
+    api.run(debug=False, threaded=True, host=FLASK_HOST)
 
 
 def handle_termination_signal(_, __):
